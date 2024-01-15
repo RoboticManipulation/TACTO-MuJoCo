@@ -18,14 +18,16 @@ The handle for OSMesa is osmesa.
 Default is pyglet, which requires active window
 """
 
-# import os
-# os.environ["PYOPENGL_PLATFORM"] = "egl"
+import os
+import threading
+
+os.environ["PYOPENGL_PLATFORM"] = "osmesa"
+# os.environ["EGL_DEVICE_ID"] = "0"
 
 import logging
 
 import cv2
 import numpy as np
-import pybullet as p
 import pyrender
 import trimesh
 from omegaconf import OmegaConf
@@ -33,6 +35,31 @@ from scipy.spatial.transform import Rotation as R
 
 logger = logging.getLogger(__name__)
 
+class RenderThread(threading.Thread):
+    """
+    This class implements a HelperThread to allow the rendering of the mujoco cameras in another thread to avoid
+    conflicts with the rendering context of tacto.
+    """
+
+    def __init__(self, scene):
+        super().__init__()
+        self.scene = scene
+
+    def reload_meshes(self):
+        for node in self.scene.nodes:
+            if node.mesh is not None:
+                for primitive in node.mesh.primitives:
+                    if primitive._in_context():
+                        primitive._unbind()
+                        primitive._remove_from_context()
+
+                        # primitive._add_to_context()
+    def run(self) -> None:
+        """
+        This function renders the mujoco cameras
+        """
+        self.reload_meshes()
+        pyrender.Viewer(self.scene)
 
 def euler2matrix(angles=[0, 0, 0], translation=[0, 0, 0], xyz="xyz", degrees=False):
     r = R.from_euler(xyz, angles, degrees=degrees)
@@ -117,12 +144,24 @@ class Renderer:
     def background(self):
         return self._background_real
 
+    def reload_meshes(self):
+        for node in self.scene.nodes:
+            if node.mesh is not None:
+                for primitive in node.mesh.primitives:
+                    if primitive._in_context():
+                        primitive._unbind()
+                        primitive._remove_from_context()
+
+                        primitive._add_to_context()
+
+
     def _init_pyrender(self):
         """
         Initialize pyrender
         """
         # Create scene for pybullet sync
         self.scene = pyrender.Scene()
+        self.tmp_scene = None
 
         # Create scene for rendering given depth image
         self.scene_depth = pyrender.Scene()
@@ -394,7 +433,7 @@ class Renderer:
         # Update camera
         for i in range(self.nb_cam):
             camera_pose = pose.dot(self.camera_zero_poses[i])
-            self.camera_nodes[i].matrix = camera_pose
+            self.camera_nodes[i].matrix = camera_pose.copy()
 
         # Update gel
         gel_pose = pose.dot(self.gel_pose0)
@@ -536,7 +575,7 @@ class Renderer:
         return color, depth
 
     def render(
-        self, object_poses=None, normal_forces=None, noise=True, calibration=True
+        self, object_poses=None, normal_forces=None, noise=True, calibration=True, visualize_scene: bool = False
     ):
         """
 
@@ -564,10 +603,16 @@ class Renderer:
                 self.adjust_with_force(
                     camera_pos, camera_ori, normal_forces, object_poses,
                 )
-
+            if visualize_scene:
+                self.reload_meshes()
+                visualizer = RenderThread(self.scene)
+                visualizer.start()
+                visualizer.join()
+            self.reload_meshes()
+            self.r = pyrender.OffscreenRenderer(self.width, self.height)
             color, depth = self.r.render(self.scene, flags=self.flags_render)
             color, depth = self._post_process(color, depth, i, noise, calibration)
-
+            self.reload_meshes()
             colors.append(color)
             depths.append(depth)
 

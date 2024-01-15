@@ -1,0 +1,13 @@
+opencv-python==4.7.0.72
+numpy==1.20.3
+pybullet==3.2.5
+trimesh==3.22.0
+urdfpy==0.0.22
+pyrender==0.1.45
+omegaconf==2.3.0
+hydra-core
+scipy==1.10.1
+mujoco==2.3.7
+pybulletx==0.4.1
+matplotlib==3.7.1
+
