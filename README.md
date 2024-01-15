@@ -1,4 +1,4 @@
-# TACTO Simulator for High-Resolution Vision-based Tactile Sensors in MuJoCo Physics Engine
+# TACTO: Simulator for High-Resolution Vision-based Tactile Sensors in MuJoCo Physics Engine
 
 [![License: MIT](https://img.shields.io/github/license/facebookresearch/tacto)](LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/tacto)](https://pypi.org/project/tacto/)
