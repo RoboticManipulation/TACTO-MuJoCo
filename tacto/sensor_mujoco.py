@@ -11,7 +11,6 @@ from dataclasses import dataclass
 
 import cv2
 import numpy as np
-import pybullet as p
 import mujoco
 import trimesh
 from urdfpy import URDF
@@ -194,26 +193,6 @@ class Sensor:
         self.add_object(
             urdf_path, id, link_id, globalScaling=1.0
         )
-
-    def loadURDF(self, *args, **kwargs):
-        warnings.warn(
-            "\33[33mSensor.loadURDF is deprecated. Please use body = "
-            "pybulletX.Body(...) and Sensor.add_body(body) instead\33[0m."
-        )
-        """
-        Load the object urdf to pybullet and tacto simulator.
-        The tacto simulator will create the same scene in OpenGL for faster rendering
-        """
-        urdf_fn = args[0]
-        globalScaling = kwargs.get("globalScaling", 1.0)
-
-        # Add to pybullet
-        obj_id = p.loadURDF(physicsClientId=self.cid, *args, **kwargs)
-
-        # Add to tacto simulator scene
-        self.add_object(urdf_fn, obj_id, globalScaling=globalScaling)
-
-        return obj_id
 
     def update(self):
         warnings.warn(
