@@ -5,7 +5,7 @@
 [![CircleCI](https://circleci.com/gh/facebookresearch/tacto.svg?style=shield)](https://circleci.com/gh/facebookresearch/tacto)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 <a href="https://digit.ml/">
-<img height="20" src="/website/static/img/digit-logo.svg" alt="DIGIT-logo" />
+<img height="20" src="digit-logo.svg" alt="DIGIT-logo" />
 </a>
 
 
