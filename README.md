@@ -9,7 +9,7 @@
 </a>
 
 
-This package is a forked version of the repository [tacto](https://github.com/facebookresearch/tacto). It provides a simulator for vision-based tactile sensors, such as [DIGIT](https://digit.ml) with Mujoco.
+This package is a forked version of the repository [TACTO](https://github.com/facebookresearch/tacto). It provides a simulator for vision-based tactile sensors, such as [DIGIT](https://digit.ml) with Mujoco.
 
 
 For more information refer to the corresponding paper [TACTO: A Fast, Flexible, and Open-source Simulator for High-resolution Vision-based Tactile Sensors](https://arxiv.org/abs/2012.08456).
