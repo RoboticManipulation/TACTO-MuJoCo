@@ -1,4 +1,4 @@
-# TACTO Simulator for High-Resolution Vision-based Tactile Sensors in Mujoco Physics Engine
+# TACTO Simulator for High-Resolution Vision-based Tactile Sensors in MuJoCo Physics Engine
 
 [![License: MIT](https://img.shields.io/github/license/facebookresearch/tacto)](LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/tacto)](https://pypi.org/project/tacto/)
@@ -9,7 +9,7 @@
 </a>
 
 
-This package is a forked version of the repository [TACTO](https://github.com/facebookresearch/tacto). It provides a simulator for vision-based tactile sensors, such as [DIGIT](https://digit.ml) with [Mujoco](https://mujoco.readthedocs.io/en/stable/overview.html).
+This package is a forked version of the repository [TACTO](https://github.com/facebookresearch/tacto). It provides a simulator for vision-based tactile sensors, such as [DIGIT](https://digit.ml) with [MuJoCo](https://mujoco.readthedocs.io/en/stable/overview.html).
 
 
 For more information refer to the corresponding paper [TACTO: A Fast, Flexible, and Open-source Simulator for High-resolution Vision-based Tactile Sensors](https://arxiv.org/abs/2012.08456).
