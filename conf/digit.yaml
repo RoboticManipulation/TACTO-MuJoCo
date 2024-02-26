@@ -8,7 +8,7 @@ tacto:
   visualize_gui: True
 
 experiment:
-  urdf_path: "./meshes/experiment.urdf"
+  urdf_path: "./meshes/scene.xml"
 
 digit:
   urdf_path: "./meshes/digit.urdf"

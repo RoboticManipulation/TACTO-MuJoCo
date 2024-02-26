@@ -1,0 +1,9 @@
+Wed Feb 21 16:35:31 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Thu Feb 22 12:02:02 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Thu Feb 22 12:06:58 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
