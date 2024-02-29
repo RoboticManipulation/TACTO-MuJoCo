@@ -7,3 +7,90 @@ ERROR: mjui_add: slider expects 'min max [div]'
 Thu Feb 22 12:06:58 2024
 ERROR: mjui_add: slider expects 'min max [div]'
 
+Tue Feb 27 16:36:59 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 16:40:02 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 17:42:18 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 17:49:39 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 17:52:57 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 17:55:00 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:00:27 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:04:40 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:08:37 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:13:57 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:16:27 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:18:55 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:22:44 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:24:00 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:25:36 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:30:46 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:31:23 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:32:30 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:32:55 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Tue Feb 27 18:33:21 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Wed Feb 28 09:51:47 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Wed Feb 28 10:00:52 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Wed Feb 28 10:03:52 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Wed Feb 28 10:17:02 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Wed Feb 28 10:17:39 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Wed Feb 28 10:27:45 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Wed Feb 28 10:40:39 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Wed Feb 28 11:40:06 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+
+Wed Feb 28 11:54:54 2024
+ERROR: mjui_add: slider expects 'min max [div]'
+

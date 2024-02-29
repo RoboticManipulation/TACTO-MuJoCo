@@ -80,7 +80,7 @@
     <mesh class="2f85" file="pad.stl"/>
     <mesh class="2f85" file="silicone_pad.stl"/>
     <mesh class="2f85" file="spring_link.stl"/>
-     <mesh name="digit" scale="1 1 1" file="digit.STL"/>
+    <mesh name="digit" scale="1 1 1" file="digit.STL"/>
   </asset>
 
   <default>
@@ -248,7 +248,7 @@
                        <body name="base_mount" pos="0 0 0.007" childclass="2f85">
                           <geom class="visual" mesh="base_mount" material="black_sawyer"/>
                           <geom class="collision" mesh="base_mount"/>
-                          <joint name="sawyer_attachment_site" class="2f85" type="hinge" axis="1 0 0" pos="0 0 0"/>
+                          <!-- <joint name="sawyer_attachment_site" class="2f85" type="hinge" axis="1 0 0" pos="0 0 0"/> -->
                           <body name="base" pos="0 0 0.0038" quat="1 0 0 -1">
                             <inertial mass="0.777441" pos="0 -2.70394e-05 0.0354675" quat="1 -0.00152849 0 0"
                               diaginertia="0.000260285 0.000225381 0.000152708"/>
@@ -283,7 +283,9 @@
                                 <geom class="visual" mesh="follower" material="black"/>
                                 <geom class="collision" mesh="follower"/>
                                 <body name="right_pad" pos="0 -0.0189 0.01352">
-                                  <geom type="mesh" rgba="1 1 1 1" name="digit_right" mesh="digit" pos="0.022 0  0.006"/>
+                                   <body name="digit_right" pos="-0.022 0  0.006" quat="0 0 0 1">
+                                    <geom type="mesh" rgba="1 1 1 1" mass="0.1"  mesh="digit" />
+                                  </body>
                                   <geom class="pad_box1" name="right_pad1"/>
                                   <geom class="pad_box2" name="right_pad2"/>
                                   <inertial mass="0.0035" pos="0 -0.0025 0.0185" quat="0.707107 0 0 0.707107"
@@ -323,7 +325,7 @@
                                 <geom class="visual" mesh="follower" material="black"/>
                                 <geom class="collision" mesh="follower"/>
                                 <body name="left_pad" pos="0 -0.0189 0.01352">
-                                  <body name="digit_left" pos="0.022 0  0.006" quat="0 0 0 1">
+                                  <body name="digit_left" pos="0.022 0  0.006"> 
                                     <geom type="mesh" rgba="1 1 1 1" mass="0.1"  mesh="digit" />
                                   </body>
                                   <geom class="pad_box1" name="left_pad1"/>
@@ -403,10 +405,10 @@
     <general name="a6" joint="right_j6" class="small_joint" ctrlrange="-4.7124 4.7124"/>
   </actuator>
 
-  <keyframe>
-    <!--key name="home" qpos="0 -1.18 0 2.18 0 0.57 3.3161" ctrl="0 -1.18 0 2.18 0 0.57 3.3161"/> -->
-    <!-- <key name="home" qpos="0 0 -1.18 0 2.18 0 0.57 3.3161" ctrl="0 0 -1.18 0 2.18 0 0.57 3.3161"/> -->
-  </keyframe>
+  <!-- <keyframe>
+    <key name="home" qpos="0 -1.18 0 2.18 0 0.57 3.3161" ctrl="0 -1.18 0 2.18 0 0.57 3.3161"/>
+    <key name="home" qpos="0 0 -1.18 0 2.18 0 0.57 3.3161" ctrl="0 0 -1.18 0 2.18 0 0.57 3.3161"/>
+  </keyframe> -->
 
 </mujoco>
 

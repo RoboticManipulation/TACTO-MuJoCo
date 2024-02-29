@@ -18,6 +18,7 @@ from dm_control.utils.transformations import quat_to_euler
 
 from .renderer import Renderer
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -135,19 +136,29 @@ class Sensor:
 
         for link_id in link_ids:
             cam_name = "cam" + str(self.nb_cam)
+            print(cam_name)
             self.cameras[cam_name] = Link(self.mj_data, self.mj_model, obj_id, link_id, self.cid, self.ordering)
+            print(self.cameras)
             self.nb_cam += 1
+            #import pdb; pdb.set_trace()
 
-    def add_object(self, urdf_fn, obj_id, mujococ_link_id, globalScaling=1.0):
+    def add_object(self, urdf_fn, obj_id, mujococ_link_id, globalScaling=0.1):
         # Load urdf file by urdfpy
+        print(f"add_object: self: {self}")
+        print(f"urdf_fn: {urdf_fn}")
+        print(f"obj_id: {obj_id}")
+        print(f"mujococ_link_id: {mujococ_link_id}")
+        #import pdb; pdb.set_trace()
+
         robot = URDF.load(urdf_fn)
         for link_id, link in enumerate(robot.links):
             if len(link.visuals) == 0:
                 continue
             # Get each links
             visual = link.visuals[0]
+            print(f"visual: {visual}")
             obj_trimesh = visual.geometry.meshes[0]
-
+            print(f"obj_trimesh: {obj_trimesh}")
             # Set mesh color to default (remove texture)
             obj_trimesh.visual = trimesh.visual.ColorVisuals()
 
@@ -205,20 +216,27 @@ class Sensor:
         Update the pose of each objects registered in tacto simulator
         """
         for obj_name in self.objects.keys():
+           # import pdb; pdb.set_trace()
             self.object_poses[obj_name] = self.objects[obj_name].get_pose()
 
     def get_force(self, cam_name):
         # Load contact force
+        #import pdb; pdb.set_trace()
+        print(f"cam_name: {cam_name}")
 
         obj_id = self.cameras[cam_name].obj_id
         link_id = self.cameras[cam_name].link_id
-
+        print(f"obj_id: {obj_id}")
+        print(f"link_id: {link_id}")
         pts = self.mj_data.contact
-
+        #import pdb; pdb.set_trace()
         # accumulate forces from 0. using defaultdict of float
         self.normal_forces[cam_name] = collections.defaultdict(float)
 
         for index, pt in enumerate(pts):
+            print(f"pt: {pt}")
+            print(f" get_forces kram :{self.mj_model.geom(pt.geom2).bodyid[0]}")
+            print(f"obj_id: {obj_id}")
             if self.mj_model.geom(pt.geom2).bodyid[0] != obj_id:
                 if obj_id == self.mj_model.geom(pt.geom1).bodyid[0]:
                     interesting_geom = pt.geom2
@@ -305,7 +323,8 @@ class Sensor:
 
         # concatenate colors horizontally (axis=1)
         color = np.concatenate(colors, axis=1)
-
+        #print(f"color: {color}")
+        
         if self.show_depth:
             # concatenate depths horizontally (axis=1)
             depth = np.concatenate(list(map(self._depth_to_color, depths)), axis=1)
