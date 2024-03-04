@@ -54,7 +54,7 @@ def main(cfg):
     #print(f"digit_left_id: {digit_left_id}")
     #import pdb; pdb.set_trace()
 
-    digits.add_camera(digit_body._model, [digit_left_id, digit_right_id])
+    digits.add_camera(1, [digit_left_id, digit_right_id])
     
     #print(digit_body.body("base_link").id)
     # add object to tacto simulator
