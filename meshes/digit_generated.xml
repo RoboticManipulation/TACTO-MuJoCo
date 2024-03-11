@@ -1,9 +1,0 @@
-<mujoco model="digit">
-  <compiler angle="radian"/>
-  <asset>
-    <mesh name="digit" file="digit.STL"/>
-  </asset>
-  <worldbody>
-    <geom type="mesh" rgba="1 1 1 1" mesh="digit"/>
-  </worldbody>
-</mujoco>

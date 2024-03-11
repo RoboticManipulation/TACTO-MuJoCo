@@ -15,9 +15,6 @@ import mujoco
 import trimesh
 from urdfpy import URDF
 from dm_control.utils.transformations import quat_to_euler
-from utils import write_f_strings_to_file
-import os
-from datetime import datetime
 
 from .renderer import Renderer
 
@@ -143,10 +140,15 @@ class Sensor:
             self.cameras[cam_name] = Link(self.mj_data, self.mj_model, obj_id, link_id, self.cid, self.ordering)
             print(self.cameras)
             self.nb_cam += 1
-           
+            #import pdb; pdb.set_trace()
 
     def add_object(self, urdf_fn, obj_id, mujococ_link_id, globalScaling=0.1):
-        # Load urdf file by urdfp
+        # Load urdf file by urdfpy
+        print(f"add_object: self: {self}")
+        print(f"urdf_fn: {urdf_fn}")
+        print(f"obj_id: {obj_id}")
+        print(f"mujococ_link_id: {mujococ_link_id}")
+        #import pdb; pdb.set_trace()
 
         robot = URDF.load(urdf_fn)
         for link_id, link in enumerate(robot.links):
@@ -220,16 +222,21 @@ class Sensor:
     def get_force(self, cam_name):
         # Load contact force
         #import pdb; pdb.set_trace()
-     
+        print(f"cam_name: {cam_name}")
 
         obj_id = self.cameras[cam_name].obj_id
         link_id = self.cameras[cam_name].link_id
-       
+        print(f"obj_id: {obj_id}")
+        print(f"link_id: {link_id}")
         pts = self.mj_data.contact
         #import pdb; pdb.set_trace()
         # accumulate forces from 0. using defaultdict of float
         self.normal_forces[cam_name] = collections.defaultdict(float)
+
         for index, pt in enumerate(pts):
+            print(f"pt: {pt}")
+            print(f" get_forces kram :{self.mj_model.geom(pt.geom2).bodyid[0]}")
+            print(f"obj_id: {obj_id}")
             if self.mj_model.geom(pt.geom2).bodyid[0] != obj_id:
                 if obj_id == self.mj_model.geom(pt.geom1).bodyid[0]:
                     interesting_geom = pt.geom2
@@ -240,37 +247,20 @@ class Sensor:
                 interesting_geom = pt.geom1
 
             body_id_b = self.mj_model.geom(interesting_geom).bodyid[0]
+
             link_id_b = self.mj_model.body(self.mj_model.geom(interesting_geom).bodyid[0]).parentid[0]
+
             obj_name = "{}_{}".format(body_id_b, link_id_b)
             # ignore contacts we don't care (those not in self.objects)
             if obj_name not in self.objects:
                 continue
 
-            #data = np.zeros(6)
-            
-            #mujoco.mj_contactForce(self.mj_model, self.mj_data, index, data)
+            # data = np.zeros(6)
+            # mujoco.mj_contactForce(self.mj_model, self.mj_data, index, data)
             data = self.mj_data.contact_force(index).reshape((6,)).copy()
-            # print(f"index: {index}")
-            # print(f"contact point: {pt}")
-            # write_f_strings_to_file(file_path, f"contact point: {pt}")
-            # print(f"obj_id: {obj_id}")
-            # write_f_strings_to_file(file_path, f"obj_id: {obj_id}")
-            # print (f"self.mj_model.geom(pt.geom1).bodyid[0]: {self.mj_model.geom(pt.geom1).bodyid[0]}")
-            # write_f_strings_to_file(file_path, f"self.mj_model.geom(pt.geom1).bodyid[0]: {self.mj_model.geom(pt.geom1).bodyid[0]}")
-            # write_f_strings_to_file(file_path, f"self.mj_model.geom(pt.geom2).bodyid[0]: {self.mj_model.geom(pt.geom2).bodyid[0]}")
-            # print(f"interesting body_id_b: {body_id_b}")
-            # write_f_strings_to_file(file_path, f"interesting body_id_b: {body_id_b}")
-            # print(f"interesting link_id_b: {link_id_b}")
-            # write_f_strings_to_file(file_path, f"interesting link_id_b: {link_id_b}")
-            # print(f"obj_name: {obj_name}")
-            # write_f_strings_to_file(file_path, f"obj_name: {obj_name}")
-            # print(f"contact force: {data}")
-            # write_f_strings_to_file(file_path, f"contact force: {data}")
-            #print(np.linalg.norm(data[:3]))
+            # print(np.linalg.norm(data[:3]))
             # Accumulate normal forces
             self.normal_forces[cam_name][obj_name] += np.linalg.norm(data[:3])
-            #print(f"self.normal_forces[cam_name][obj_name]: {self.normal_forces[cam_name][obj_name]}")
-            #write_f_strings_to_file(file_path, f"self.normal_forces[cam_name][obj_name]: {self.normal_forces[cam_name][obj_name]}")
 
         return self.normal_forces[cam_name]
 
@@ -297,16 +287,18 @@ class Sensor:
 
         colors = []
         depths = []
-     
+
         for i in range(self.nb_cam):
             cam_name = "cam" + str(i)
+
             # get the contact normal forces
             normal_forces = self.get_force(cam_name)
+
             if normal_forces:
-                position, orientation = self.cameras[cam_name].get_pose()  
+                position, orientation = self.cameras[cam_name].get_pose()
                 self.renderer.update_camera_pose(position, orientation)
                 color, depth = self.renderer.render(self.object_poses, normal_forces, visualize_scene=visualize_digit)
-            
+
                 # Remove the depth from curved gel
                 for j in range(len(depth)):
                     depth[j] = self.renderer.depth0[j] - depth[j]
@@ -328,6 +320,7 @@ class Sensor:
         """
         if not self.visualize_gui:
             return
+
         # concatenate colors horizontally (axis=1)
         color = np.concatenate(colors, axis=1)
         #print(f"color: {color}")
