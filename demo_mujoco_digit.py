@@ -9,6 +9,9 @@ from omegaconf import DictConfig
 import dm_control.mujoco
 import mujoco.viewer
 from mujoco import MjModel, MjData
+from utils import write_f_strings_to_file
+import os
+from datetime import datetime
 
 from dm_control import mjcf
 
@@ -32,42 +35,29 @@ def main(cfg):
 
     bg = cv2.imread("conf/bg_digit_240_320.jpg")
 
-    # Initialize MuJoCo physics engine
-
-
-    # Create and initialize DIGIT
     physics = dm_control.mujoco.Physics.from_xml_path(cfg.experiment.urdf_path)
-
-
 
     digit_body = physics.model
     digit_body_data = physics.data
 
     digits = sensor.Sensor(digit_body, digit_body_data, **cfg.tacto, background=bg)
-    print(f"digit_body: {digit_body}")
-    print(f"digit_body_data: {digit_body_data}")
-    #import pdb; pdb.set_trace()
+    
+    digits.add_camera(physics.model.body('digit_left').id, [0])
+    digits.add_camera(physics.model.body('digit_right').id, [1])
 
     
-    digit_left_id = physics.model.body('digit_left').id
-    digit_right_id = physics.model.body('digit_right').id
-    #print(f"digit_left_id: {digit_left_id}")
-    #import pdb; pdb.set_trace()
-
-    digits.add_camera(1, [digit_left_id, digit_right_id])
-    
-    #print(digit_body.body("base_link").id)
-    # add object to tacto simulator
     digits.add_body(cfg.object.urdf_path, digit_body_data.body("base_link").id, 0)
+    
+   
+  
 
     # run p.stepSimulation in another thread
     t = SimulationRunner(mj_model=digit_body._model, mj_data=digit_body_data._data)
     t.start()
 
     while t.is_alive():
-        color, depth = digits.render(visualize_digit=True)
+        color, depth = digits.render(visualize_digit=False)
         digits.updateGUI(color, depth)
-
     t.join()
     
 

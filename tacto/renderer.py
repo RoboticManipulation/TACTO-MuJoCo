@@ -32,6 +32,9 @@ import pyrender
 import trimesh
 from omegaconf import OmegaConf
 from scipy.spatial.transform import Rotation as R
+from utils import write_f_strings_to_file
+import os
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -584,12 +587,17 @@ class Renderer:
         :param noise:
         :return:
         """
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+        file_name = f"render_render_{timestamp}.txt"
+        folder_path = "pia_logs"  
+        file_path = os.path.join(folder_path, file_name)
+
         colors, depths = [], []
 
         for i in range(self.nb_cam):
             # Set the main camera node for rendering
             self.scene.main_camera_node = self.camera_nodes[i]
-
+            write_f_strings_to_file(file_path, f"self.scene.main_camera_node: {self.scene.main_camera_node}")
             # Set up corresponding lights (max: 8)
             self.update_light(self.cam_light_ids[i])
 
@@ -597,12 +605,16 @@ class Renderer:
             if object_poses is not None and normal_forces is not None:
                 # Get camera pose for adjusting object pose
                 camera_pose = self.camera_nodes[i].matrix
+                write_f_strings_to_file(file_path, f"juuuhuu es gibt einen Kontakt l 608")
+                write_f_strings_to_file(file_path, f"camera_pose: {camera_pose}")
                 camera_pos = camera_pose[:3, 3].T
                 camera_ori = R.from_matrix(camera_pose[:3, :3]).as_quat()
+                write_f_strings_to_file(file_path, f"camera_pos: {camera_pos}")
 
                 self.adjust_with_force(
                     camera_pos, camera_ori, normal_forces, object_poses,
                 )
+                write_f_strings_to_file(file_path, f"self.adjust_with_force: {self.adjust_with_force}")
             if visualize_scene:
                 self.reload_meshes()
                 visualizer = RenderThread(self.scene)
@@ -611,7 +623,15 @@ class Renderer:
             self.reload_meshes()
             self.r = pyrender.OffscreenRenderer(self.width, self.height)
             color, depth = self.r.render(self.scene, flags=self.flags_render)
+            write_f_strings_to_file(file_path, f"color: {color}")
+            write_f_strings_to_file(file_path, f"depth: {depth}")
             color, depth = self._post_process(color, depth, i, noise, calibration)
+            write_f_strings_to_file(file_path, f"color: {color}")
+            write_f_strings_to_file(file_path, f"depth: {depth}")
+            if (np.any(depth <= 0.019) or np.any(depth >= 0.02)): 
+                write_f_strings_to_file(file_path, f" Es ist was weiss? depth ist cool")
+            write_f_strings_to_file(file_path, f" Maximal wert depth: {np.max(depth)}")
+            write_f_strings_to_file(file_path, f" Minimal wert depth: {np.min(depth)}")
             self.reload_meshes()
             colors.append(color)
             depths.append(depth)

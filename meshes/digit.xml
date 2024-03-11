@@ -1,11 +1,6 @@
-<mujoco model="robot gripper sensor scene">
-  <include file="robot_gripper_sensor.xml"/>
-   <compiler angle="radian" autolimits="true" inertiafromgeom="true" discardvisual="false" balanceinertia="true"/>
+<mujoco model="digit scene">
 
-  <!-- Add some fluid viscosity to prevent the hanging box from jiggling forever -->
-  <option viscosity="0.1"/>
-
-  <statistic center="0 0 0.05" extent="0.3"/>
+  <compiler discardvisual="true" fusestatic="false" exactmeshinertia="false"/>
 
   <visual>
     <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
@@ -18,20 +13,33 @@
     <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
       markrgb="0.8 0.8 0.8" width="300" height="300"/>
     <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
-    <mesh file="textured_sphere_smooth.obj"  scale="0.15 0.15 0.15" />
+    <mesh name="textured_sphere_smooth" file="textured_sphere_smooth.obj"  scale="0.1 0.1 0.1" />
+    <mesh name="digit" scale="1 1 1" file="digit.STL"/>
   </asset>
 
   <worldbody>
     <light pos="0 0 1"/>
     <light pos="0 -0.2 1" dir="0 0.2 -0.8" directional="true"/>
     <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
- 
-    <body name="base_link" pos="1.0 -0.2 1">
-      <inertial pos="0 0 0" mass="0.1" diaginertia="1 1 1"/>
-      <joint name="obj_world" type="free"/>
-      <geom size="0.03" rgba="1 1 1 1"/>
+   
+
+   
+    <body name="digit" pos="0 0 0.012" quat="1 1 -1 1" >
+       <geom type="mesh" name='digit' size="0.1 0.1 0.1" rgba="1 1 1 1" mesh="digit"  conaffinity="0" />
+       <inertial pos="0 0 0" mass="0.1" diaginertia="1 1 1"/>
     </body>
-  
+
+
+
+    <body name="base_link" pos="0 0 1" >
+      <freejoint/>
+      <geom name='object' type="sphere" size="0.1 0.1 0.1" rgba="1 1 1 1" mesh="textured_sphere_smooth" friction="1 1 1"/>
+      <inertial pos="0 0 0" mass="0.1" diaginertia="1 1 1"/>
+    </body>
+
+
   </worldbody>
 
 </mujoco>
+
+

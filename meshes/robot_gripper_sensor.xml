@@ -1,5 +1,5 @@
 <mujoco model="robot_gripper_sensor">
-  <compiler angle="radian" autolimits="true"/>
+  <compiler angle="radian" autolimits="true" inertiafromgeom="true" discardvisual="false" balanceinertia="true"/>
 
   <option cone="elliptic" impratio="10"/>
 
@@ -80,7 +80,7 @@
     <mesh class="2f85" file="pad.stl"/>
     <mesh class="2f85" file="silicone_pad.stl"/>
     <mesh class="2f85" file="spring_link.stl"/>
-    <mesh name="digit" scale="1 1 1" file="digit.STL"/>
+    <mesh name="digit" file="digit.STL"/>
   </asset>
 
   <default>
@@ -90,13 +90,13 @@
 
       <joint axis="1 0 0"/>
       <default class="driver">
-        <joint range="0 0.8" armature="0.005" damping="0.1" solimplimit="0.95 0.99 0.001" solreflimit="0.005 1"/>
+        <joint range="0 0.8" armature="0.005" damping="0.5" solimplimit="0.95 0.99 0.001" solreflimit="0.005 1"/>
       </default>
       <default class="follower">
         <joint range="-0.872664 0.872664" pos="0 -0.018 0.0065" solimplimit="0.95 0.99 0.001" solreflimit="0.005 1"/>
       </default>
       <default class="spring_link">
-        <joint range="-0.29670597283 0.8" stiffness="0.05" springref="2.62" damping="0.00125"/>
+        <joint range="-0.29670597283 0.8" stiffness="0.5" springref="2.62" damping="0.00125"/>
       </default>
       <default class="coupler">
         <joint range="-1.57 0" solimplimit="0.95 0.99 0.001" solreflimit="0.005 1"/>
@@ -283,9 +283,10 @@
                                 <geom class="visual" mesh="follower" material="black"/>
                                 <geom class="collision" mesh="follower"/>
                                 <body name="right_pad" pos="0 -0.0189 0.01352">
-                                   <body name="digit_right" pos="-0.022 0  0.006" quat="0 0 0 1">
-                                    <geom type="mesh" rgba="1 1 1 1" mass="0.1"  mesh="digit" />
-                                  </body>
+                                    <body name="digit_right" pos="-0.022 0  0.006" quat="0 0 0 1">
+                                      <inertial pos="0 0 0" mass="0.0001" diaginertia="1 1 1"/>
+                                      <geom type="mesh" rgba="1 1 1 1" mesh="digit"/>
+                                    </body>
                                   <geom class="pad_box1" name="right_pad1"/>
                                   <geom class="pad_box2" name="right_pad2"/>
                                   <inertial mass="0.0035" pos="0 -0.0025 0.0185" quat="0.707107 0 0 0.707107"
@@ -325,8 +326,9 @@
                                 <geom class="visual" mesh="follower" material="black"/>
                                 <geom class="collision" mesh="follower"/>
                                 <body name="left_pad" pos="0 -0.0189 0.01352">
-                                  <body name="digit_left" pos="0.022 0  0.006"> 
-                                    <geom type="mesh" rgba="1 1 1 1" mass="0.1"  mesh="digit" />
+                                  <body name="digit_left" pos="0.022 0  0.006">
+                                    <inertial pos="0 0 0" mass="0.0001" diaginertia="1 1 1"/>
+                                    <geom type="mesh" rgba="1 1 1 1" mesh="digit"/>
                                   </body>
                                   <geom class="pad_box1" name="left_pad1"/>
                                   <geom class="pad_box2" name="left_pad2"/>
